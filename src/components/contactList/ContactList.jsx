@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../../redux/contactSlice';
+import { selectContactsList, selectContactsFilter } from 'redux/selectors';
 
 import {
   ContactListUl,
@@ -9,8 +10,8 @@ import {
 } from './ContactList.styled';
 
 const ContactList = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filterValue = useSelector(state => state.filters.filter).toLowerCase();
+  const contacts = useSelector(selectContactsList);
+  const filterValue = useSelector(selectContactsFilter.filter).toLowerCase();
   const dispatch = useDispatch();
 
   const handleDelete = e => {
