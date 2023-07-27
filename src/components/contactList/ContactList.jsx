@@ -1,7 +1,13 @@
-import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactSlice';
-import { selectContactsList, selectContactsFilter } from 'redux/selectors';
+import { useEffect } from 'react';
+import { deleteContact } from 'redux/operation';
+import {
+  selectFilteredContacts,
+  selectError,
+  selectIsLoading,
+} from 'redux/selectors';
+
+import { fetchContacts } from 'redux/operation';
 
 import {
   ContactListUl,
@@ -9,39 +15,43 @@ import {
   ContactDeleteButton,
 } from './ContactList.styled';
 
+import Loader from 'components/loader';
+
 const ContactList = () => {
-  const contacts = useSelector(selectContactsList);
-  const filterValue = useSelector(selectContactsFilter.filter).toLowerCase();
+  const contacts = useSelector(selectFilteredContacts);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
+
   const dispatch = useDispatch();
 
   const handleDelete = e => {
-    dispatch(deleteContact(e.target.id));
+    dispatch(deleteContact(e.currentTarget.id));
   };
 
-  const filteredContacts = useMemo(() => {
-    if (!filterValue || filterValue === '') {
-      return contacts;
-    }
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterValue)
-    );
-  }, [contacts, filterValue]);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <ContactListUl>
-      {filteredContacts.map(contact => (
-        <ContactItem key={contact.id}>
-          {contact.name}: {contact.number}
-          <ContactDeleteButton
-            type="button"
-            onClick={handleDelete}
-            id={contact.id}
-          >
-            Delete
-          </ContactDeleteButton>
-        </ContactItem>
-      ))}
+      {isLoading && !error ? (
+        <Loader />
+      ) : contacts.length === 0 && !error ? (
+        <p>First contact</p>
+      ) : (
+        contacts.map(contact => (
+          <ContactItem key={contact.id}>
+            {contact.name}: {contact.number}
+            <ContactDeleteButton
+              type="button"
+              onClick={handleDelete}
+              id={contact.id}
+            >
+              Delete
+            </ContactDeleteButton>
+          </ContactItem>
+        ))
+      )}
     </ContactListUl>
   );
 };
