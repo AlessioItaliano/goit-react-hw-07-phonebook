@@ -20,7 +20,9 @@ const AddContact = () => {
   const onSubmit = e => {
     e.preventDefault();
 
-    if (contacts.some(({ name }) => name === userName)) {
+    if (
+      contacts.some(({ name }) => name.toLowerCase() === userName.toLowerCase())
+    ) {
       return alert(`${userName} is already in contacts`);
     }
 
