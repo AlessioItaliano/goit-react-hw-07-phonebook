@@ -1,21 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { deleteContact } from 'redux/operation';
+import { fetchContacts, deleteContact } from 'redux/operation';
+import Loader from 'components/loader';
+
 import {
   selectFilteredContacts,
   selectError,
   selectIsLoading,
 } from 'redux/selectors';
 
-import { fetchContacts } from 'redux/operation';
-
 import {
   ContactListUl,
   ContactItem,
   ContactDeleteButton,
 } from './ContactList.styled';
-
-import Loader from 'components/loader';
 
 const ContactList = () => {
   const contacts = useSelector(selectFilteredContacts);
@@ -37,11 +35,11 @@ const ContactList = () => {
       {isLoading && !error ? (
         <Loader />
       ) : contacts.length === 0 && !error ? (
-        <p>First contact</p>
+        <p>Your contact book is empty</p>
       ) : (
         contacts.map(contact => (
           <ContactItem key={contact.id}>
-            {contact.name}: {contact.number}
+            {contact.name}: {contact.phone}
             <ContactDeleteButton
               type="button"
               onClick={handleDelete}

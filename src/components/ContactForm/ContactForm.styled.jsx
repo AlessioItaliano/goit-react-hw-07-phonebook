@@ -5,7 +5,7 @@ export const AddContactForm = styled.form`
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  width: 300px;
+  width: 400px;
   padding: 12px;
   background-color: skyblue;
   border: 1px solid blue;

@@ -6,7 +6,7 @@ export const ContactListUl = styled.ul`
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  width: 300px;
+  width: 400px;
   padding: 12px;
   border-radius: 4px;
   background-color: skyblue;
